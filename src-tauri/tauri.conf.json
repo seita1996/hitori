@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "hitori",
+  "productName": "Hitori",
   "version": "0.1.0",
   "identifier": "com.hitori.app",
   "build": {
@@ -12,9 +12,11 @@
   "app": {
     "windows": [
       {
-        "title": "hitori",
+        "title": "Hitori - 誰にも見られない、あなた専用タイムライン",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
       }
     ],
     "security": {
@@ -30,6 +32,9 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "category": "Productivity",
+    "shortDescription": "Private micro-blogging app",
+    "longDescription": "A personal micro-blogging app for private thoughts"
   }
 }

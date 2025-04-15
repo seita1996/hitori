@@ -1,50 +1,144 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { NavBar } from "./components/NavBar";
+import { PostForm } from "./components/PostForm";
+import { Timeline } from "./components/Timeline";
+import { Settings } from "./components/Settings";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+import { syncPosts } from "./utils/cloudSync";
+import { Post, AppView, CloudProvider, SyncStatus } from "./types";
+import { AnimatePresence, motion } from "framer-motion";
+import "./index.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  // アプリの状態管理
+  const [view, setView] = useState<AppView>("post");
+  const [posts, setPosts] = useLocalStorage<Post[]>("hitori-posts", []);
+  const [cloudProvider, setCloudProvider] = useLocalStorage<CloudProvider>("cloud-provider", "none");
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>("synced");
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  // 新しい投稿を作成
+  const handleNewPost = (content: string) => {
+    const newPost: Post = {
+      id: uuidv4(),
+      content,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isSynced: false
+    };
+
+    setPosts([newPost, ...posts]);
+  };
+
+  // 投稿を削除
+  const handleDeletePost = (id: string) => {
+    setPosts(posts.filter(post => post.id !== id));
+  };
+
+  // 手動同期
+  const handleSync = async () => {
+    setSyncStatus("syncing");
+    const result = await syncPosts(posts, cloudProvider);
+    setSyncStatus(result.status);
+
+    if (result.status === "synced") {
+      // 同期成功後、全ての投稿にisSynced=trueをセット
+      setPosts(posts.map(post => ({ ...post, isSynced: true })));
+    }
+  };
+
+  // オンライン状態の監視
+  useEffect(() => {
+    const handleOnline = () => {
+      if (syncStatus === "offline") {
+        setSyncStatus("synced");
+      }
+    };
+
+    const handleOffline = () => {
+      setSyncStatus("offline");
+    };
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [syncStatus]);
+
+  // 自動同期（未同期の投稿がある場合）
+  useEffect(() => {
+    if (
+      cloudProvider !== "none" &&
+      navigator.onLine &&
+      posts.some(post => !post.isSynced)
+    ) {
+      const autoSync = async () => {
+        await syncPosts(posts, cloudProvider);
+        setPosts(posts.map(post => ({ ...post, isSynced: true })));
+      };
+
+      // 30秒後に自動同期
+      const timer = setTimeout(autoSync, 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [posts, cloudProvider]);
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+      <NavBar currentView={view} setView={setView} />
 
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
+      <main className="container mx-auto p-4 max-w-2xl">
+        <AnimatePresence mode="wait">
+          {view === "post" && (
+            <motion.div
+              key="post"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <PostForm onSubmit={handleNewPost} />
+            </motion.div>
+          )}
 
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+          {view === "timeline" && (
+            <motion.div
+              key="timeline"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Timeline posts={posts} onDelete={handleDeletePost} />
+            </motion.div>
+          )}
+
+          {view === "settings" && (
+            <motion.div
+              key="settings"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Settings
+                cloudProvider={cloudProvider}
+                onProviderChange={setCloudProvider}
+                onSync={handleSync}
+                syncStatus={syncStatus}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
+
+      <footer className="border-t dark:border-gray-700 p-4 text-center text-sm text-gray-500">
+        <p>Hitori - 誰にも見られない、あなた専用タイムライン</p>
+      </footer>
+    </div>
   );
 }
 

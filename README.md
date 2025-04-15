@@ -1,7 +1,105 @@
-# Tauri + React + Typescript
+# Hitori (ひとり)
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+あなただけのためのつぶやきアプリ - 誰とも繋がらずに自分の思いを記録するプライベートな空間。
 
-## Recommended IDE Setup
+## 概要
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+Hitoriは、SNSではなく、自分だけのために思いや感情を書き留めるためのデスクトップアプリケーションです。ソーシャルメディアのストレスやプレッシャーなく、純粋に自分の考えを表現し、振り返るための場所を提供します。
+
+![スクリーンショット](./screenshot.png) <!-- 実際のアプリのスクリーンショットに差し替えてください -->
+
+## 特徴
+
+- **プライベートな表現空間**: フォロワーやいいねを気にすることなく、自分のために書く
+- **シンプルなインターフェース**: 「投稿」「履歴」「設定」の3画面構成
+- **クロスプラットフォーム**: Windows, macOS, Linuxに対応
+- **文字数制限**: 考えを簡潔に表現するための280文字制限
+- **美しいアニメーション**: 心地よい使用感を提供するUI体験
+- **ダーク/ライトモード**: 使用環境や好みに合わせたテーマ選択
+- **クラウド同期**: Google DriveやiCloudとの連携でデータをバックアップ（任意）
+- **サーバーレス**: アカウント登録不要で、すぐに使い始められる
+
+## インストール
+
+### ダウンロード
+
+以下のリンクから、お使いのプラットフォーム向けのインストーラをダウンロードしてください：
+
+- [Windows (.msi)](https://example.com/hitori-windows.msi)
+- [macOS (.dmg)](https://example.com/hitori-macos.dmg)
+- [Linux (.AppImage)](https://example.com/hitori-linux.AppImage)
+
+### 手動ビルド
+
+ソースコードからビルドする場合は、以下の手順に従ってください：
+
+```bash
+# リポジトリのクローン
+git clone https://github.com/yourusername/hitori.git
+cd hitori
+
+# 依存関係のインストール
+pnpm install
+
+# 開発モードで実行
+pnpm dev
+
+# Tauriアプリとして実行
+pnpm tauri dev
+
+# ビルド
+pnpm tauri build
+```
+
+アプリケーションの起動に失敗する場合は、Tauriの動作に必要なツールの環境構築ができていない可能性があります。
+以下のコマンドを実行し、不足するツールチェインのインストールを行ってください。
+
+```bash
+pnpm tauri info
+```
+
+## 使用方法
+
+1. アプリを起動すると、「投稿」画面が表示されます
+2. テキストエリアに思いついたことを入力し、「投稿」ボタンをクリック
+3. 「履歴」タブで過去の投稿を閲覧・削除できます
+4. 「設定」タブでクラウド同期の設定やテーマの変更ができます
+
+## 技術スタック
+
+- **フロントエンド**: React + TypeScript
+- **スタイリング**: Tailwind CSS
+- **アニメーション**: Framer Motion
+- **デスクトップアプリ化**: Tauri 2.0 (Rustバックエンド)
+
+## クラウド同期
+
+Hitoriは、オプションでGoogle DriveまたはiCloudとの同期をサポートしています。これにより、複数のデバイス間でのデータ共有や、データの安全なバックアップが可能になります。
+
+同期を設定するには：
+
+1. 「設定」タブを開く
+2. 「クラウド同期」セクションで希望のストレージプロバイダを選択
+3. 認証プロセスを完了する
+4. 「今すぐ同期」ボタンをクリックして、初回の同期を実行
+
+## 貢献
+
+バグの報告や機能リクエスト、PRなどの貢献を歓迎します。貢献する前に、以下の点をご確認ください：
+
+1. イシューが既に報告されていないか確認する
+2. 新しい機能やバグ修正の場合は、まずイシューを作成して議論する
+3. コードスタイルガイドラインに従う
+4. テストを追加して、変更がアプリケーションの機能を損なわないことを確認する
+
+## ライセンス
+
+[MIT](LICENSE)
+
+## 開発者
+
+- 開発者名 - [GitHubプロフィール](https://github.com/yourusername)
+
+---
+
+このプロジェクトは、ソーシャルメディアの疲れから解放された、自分だけのための表現空間を提供することを目的としています。

@@ -23,7 +23,7 @@ export function Timeline({ posts, onDelete }: TimelineProps) {
       <h2 className="text-xl font-semibold mb-5 text-gray-800 dark:text-gray-200">投稿履歴</h2>
 
       {posts.length === 0 ? (
-        <div className="text-center py-12 px-6 bg-surface-light dark:bg-surface-dark rounded-2xl shadow-soft text-gray-500 dark:text-gray-400">
+        <div className="text-center py-12 px-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md text-gray-500 dark:text-gray-400">
           <svg className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
@@ -39,7 +39,7 @@ export function Timeline({ posts, onDelete }: TimelineProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
-              className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-soft p-5 border border-gray-100 dark:border-gray-700"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-5 border border-gray-100 dark:border-gray-700"
             >
               <p className="mb-3 whitespace-pre-wrap text-gray-700 dark:text-gray-300 leading-relaxed">{post.content}</p>
               <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">

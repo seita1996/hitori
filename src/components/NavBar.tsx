@@ -8,9 +8,9 @@ interface NavBarProps {
 
 export function NavBar({ currentView, setView }: NavBarProps) {
   return (
-    <header className="border-b border-gray-200 dark:border-gray-700 bg-surface-light dark:bg-surface-dark shadow-soft">
+    <header className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
       <nav className="flex justify-between items-center p-4 max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold text-primary-dark dark:text-primary-light">Hitori</h1>
+        <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Hitori</h1>
         <div className="flex space-x-3">
           <NavButton
             active={currentView === "post"}
@@ -47,7 +47,7 @@ function NavButton({ active, onClick, label }: NavButtonProps) {
       onClick={onClick}
       className={`px-5 py-2 rounded-xl font-medium transition-all duration-200 ${
         active
-          ? "bg-primary-DEFAULT text-white shadow-sm"
+          ? "bg-indigo-500 text-white shadow-sm"
           : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
       }`}
     >

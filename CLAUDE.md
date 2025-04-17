@@ -61,7 +61,8 @@ hitori/
 │   ├── store/               # 状態管理（将来的に必要になった場合）
 │   ├── App.tsx              # メインアプリケーションコンポーネント
 │   ├── main.tsx             # エントリーポイント
-│   └── index.css            # グローバルスタイル
+│   ├── index.css            # グローバルスタイルインポート
+│   └── tailwind.css         # Tailwind CSS設定（v4.x用）
 ├── src-tauri/               # Tauriバックエンド（Rust）
 │   ├── src/                 # Rustソースコード
 │   │   └── main.rs          # メインRustエントリーポイント
@@ -70,9 +71,9 @@ hitori/
 │   └── icons/               # アプリケーションアイコン
 ├── public/                  # 静的ファイル
 ├── index.html               # HTMLエントリーポイント
-├── tailwind.config.cjs      # Tailwind設定
-├── postcss.config.cjs       # PostCSS設定
-├── vite.config.ts           # Vite設定
+├── tailwind.config.js.bak   # 旧Tailwind設定（バックアップ）
+├── postcss.config.js.bak    # 旧PostCSS設定（バックアップ）
+├── vite.config.ts           # Vite設定（@tailwindcss/viteプラグイン使用）
 ├── tsconfig.json            # TypeScript設定
 ├── package.json             # npm設定
 └── README.md                # プロジェクト説明
@@ -151,12 +152,14 @@ hitori/
 ### 問題1: Tailwind CSS 4.xとの互換性
 
 **問題**: 
-Tailwind CSS 4.xでは、PostCSSプラグインが別パッケージに移動したため、初期設定ではエラーが発生した。
+Tailwind CSS 4.xでは設定方法が大きく変更され、従来のJavaScriptベースの設定ファイルからCSSベースの設定に移行。また、PostCSSプラグインも別パッケージに移動したため、初期設定ではスタイルが適切に適用されなかった。
 
 **解決策**:
-- `@tailwindcss/postcss`パッケージをインストール
-- postcss.config.jsの拡張子を.cjsに変更
-- 設定ファイルを更新して新しいプラグイン形式に対応
+- `tailwind.config.js`をバックアップし、代わりに`src/tailwind.css`でCSS設定を実装
+- `@import "tailwindcss";`と`@theme`ディレクティブを使用した新しい設定方法を採用
+- カスタムカラーなどの設定をCSS変数として定義
+- コンポーネント内のクラス名を更新（例：`bg-primary-DEFAULT`から`bg-indigo-500`に変更）
+- Viteプラグイン`@tailwindcss/vite`を使用（既に設定済み）
 
 ### 問題2: ES ModulesとCommonJSの混在
 
@@ -239,4 +242,4 @@ Hitoriアプリケーションは、シンプルながらも機能的で、ユ�
 ---
 
 開発者: Claude 3.7 Sonnet  
-最終更新: 2025年4月15日
+最終更新: 2025年4月16日

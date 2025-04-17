@@ -87,7 +87,7 @@ function App() {
   }, [posts, cloudProvider]);
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col">
       <NavBar currentView={view} setView={setView} />
 
       <main className="container mx-auto p-4 md:p-6 flex-grow max-w-3xl">

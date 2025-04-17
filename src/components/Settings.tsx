@@ -24,11 +24,11 @@ export function Settings({
   };
 
   return (
-    <div className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-soft-lg p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
       <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-200">設定</h2>
 
       <div className="space-y-8">
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-soft">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
           <h3 className="text-lg font-medium mb-4 text-gray-700 dark:text-gray-300">クラウド同期</h3>
           <div className="space-y-3">
             <label className="flex items-center space-x-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg cursor-pointer transition-colors">
@@ -36,7 +36,7 @@ export function Settings({
                 type="radio"
                 checked={cloudProvider === "none"}
                 onChange={() => onProviderChange("none")}
-                className="h-5 w-5 text-primary-DEFAULT focus:ring-primary-light"
+                className="h-5 w-5 text-indigo-500 focus:ring-indigo-200"
               />
               <span className="text-gray-700 dark:text-gray-300">同期しない</span>
             </label>
@@ -45,7 +45,7 @@ export function Settings({
                 type="radio"
                 checked={cloudProvider === "google"}
                 onChange={() => onProviderChange("google")}
-                className="h-5 w-5 text-primary-DEFAULT focus:ring-primary-light"
+                className="h-5 w-5 text-indigo-500 focus:ring-indigo-200"
               />
               <span className="text-gray-700 dark:text-gray-300 flex items-center">
                 Google Drive
@@ -56,7 +56,7 @@ export function Settings({
                 type="radio"
                 checked={cloudProvider === "apple"}
                 onChange={() => onProviderChange("apple")}
-                className="h-5 w-5 text-primary-DEFAULT focus:ring-primary-light"
+                className="h-5 w-5 text-indigo-500 focus:ring-indigo-200"
               />
               <span className="text-gray-700 dark:text-gray-300 flex items-center">
                 iCloud
@@ -70,7 +70,7 @@ export function Settings({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-soft"
+            className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-gray-700"
           >
             <motion.button
               whileHover={{ scale: 1.03 }}
@@ -80,7 +80,7 @@ export function Settings({
               className={`px-5 py-2.5 rounded-xl font-medium transition-all duration-200 ${
                 isSyncing || syncStatus === "syncing"
                   ? "bg-gray-300 text-gray-700"
-                  : "bg-primary-DEFAULT text-white hover:bg-primary-dark shadow-sm"
+                  : "bg-indigo-500 text-white hover:bg-indigo-600 shadow-sm"
               }`}
             >
               <span className="flex items-center">
@@ -120,7 +120,7 @@ export function Settings({
           </motion.div>
         )}
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-soft">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
           <h3 className="text-lg font-medium mb-4 text-gray-700 dark:text-gray-300">テーマ</h3>
           <button
             className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl transition-colors duration-200 flex items-center"

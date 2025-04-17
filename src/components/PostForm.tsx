@@ -32,13 +32,13 @@ export function PostForm({ onSubmit, maxLength = 280 }: PostFormProps) {
   const isOverLimit = remainingChars < 0;
 
   return (
-    <div className="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-soft-lg p-6">
+    <div className="bg-white dark:bg-surface-dark shadow-md rounded-2xl p-6">
       <textarea
         ref={textAreaRef}
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="今、何を思う？"
-        className="w-full p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:border-transparent resize-none text-gray-700 dark:text-gray-200"
+        className="w-full p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700 focus:border-transparent resize-none text-gray-700 dark:text-gray-200"
         rows={3}
       />
 
@@ -64,7 +64,7 @@ export function PostForm({ onSubmit, maxLength = 280 }: PostFormProps) {
           className={`px-6 py-2 rounded-xl font-medium transition-all duration-200 ${
             isOverLimit || !content.trim()
               ? "bg-gray-200 dark:bg-gray-700 text-gray-500"
-              : "bg-primary-DEFAULT hover:bg-primary-dark text-white shadow-sm"
+              : "bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
           }`}
         >
           投稿

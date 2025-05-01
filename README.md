@@ -58,6 +58,19 @@ pnpm tauri build
 pnpm tauri info
 ```
 
+## テスト
+
+フロントエンド
+
+WIP
+
+バックエンド
+
+```
+cd src-tauri
+cargo test
+```
+
 ## 使用方法
 
 1. アプリを起動すると、「投稿」画面が表示されます

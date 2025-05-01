@@ -88,9 +88,11 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col">
-      <NavBar currentView={view} setView={setView} />
+      <div className="fixed top-0 left-0 right-0 z-10">
+        <NavBar currentView={view} setView={setView} />
+      </div>
 
-      <main className="container mx-auto p-4 md:p-6 flex-grow max-w-3xl">
+      <main className="flex-grow pt-16 pb-20">
         <AnimatePresence mode="wait">
           {view === "home" && (
             <motion.div
@@ -99,10 +101,16 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
-              className="py-2 space-y-6"
+              className="h-full"
             >
-              <PostForm onSubmit={handleNewPost} />
-              <Timeline posts={posts} onDelete={handleDeletePost} />
+              <div className="overflow-y-auto h-[calc(100vh-8rem)] px-4 md:container md:mx-auto md:max-w-3xl no-scrollbar">
+                <Timeline posts={posts} onDelete={handleDeletePost} />
+              </div>
+              <div className="fixed bottom-0 left-0 right-0 z-10 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4">
+                <div className="container mx-auto max-w-3xl">
+                  <PostForm onSubmit={handleNewPost} />
+                </div>
+              </div>
             </motion.div>
           )}
 
@@ -113,7 +121,7 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
-              className="py-2"
+              className="px-4 md:container md:mx-auto md:max-w-3xl"
             >
               <Settings
                 cloudProvider={cloudProvider}
@@ -125,10 +133,6 @@ function App() {
           )}
         </AnimatePresence>
       </main>
-
-      <footer className="border-t border-gray-200 dark:border-gray-700 py-4 text-center text-sm text-gray-500 dark:text-gray-400 mt-8">
-        <p className="font-medium">Hitori - あなただけのつぶやき空間</p>
-      </footer>
     </div>
   );
 }

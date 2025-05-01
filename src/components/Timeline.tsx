@@ -18,6 +18,9 @@ export function Timeline({ posts, onDelete }: TimelineProps) {
     });
   };
 
+  // 投稿を古い順に並べ替え（反転）
+  const sortedPosts = [...posts].reverse();
+
   return (
     <div className="space-y-5">
       <h2 className="text-xl font-semibold mb-5 text-gray-800 dark:text-gray-200">投稿履歴</h2>
@@ -32,7 +35,7 @@ export function Timeline({ posts, onDelete }: TimelineProps) {
         </div>
       ) : (
         <AnimatePresence mode="popLayout">
-          {posts.map((post) => (
+          {sortedPosts.map((post) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}

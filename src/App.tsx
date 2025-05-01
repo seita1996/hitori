@@ -87,12 +87,12 @@ function App() {
   }, [posts, cloudProvider]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col">
-      <div className="fixed top-0 left-0 right-0 z-10">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 grid grid-rows-[auto_1fr_auto] h-screen">
+      <header className="bg-white dark:bg-gray-800 shadow-sm z-10">
         <NavBar currentView={view} setView={setView} />
-      </div>
+      </header>
 
-      <main className="flex-grow pt-16 pb-20">
+      <main className="overflow-hidden">
         <AnimatePresence mode="wait">
           {view === "home" && (
             <motion.div
@@ -103,13 +103,8 @@ function App() {
               transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
               className="h-full"
             >
-              <div className="overflow-y-auto h-[calc(100vh-8rem)] px-4 md:container md:mx-auto md:max-w-3xl no-scrollbar">
+              <div className="overflow-y-auto h-full px-4 md:container md:mx-auto md:max-w-3xl no-scrollbar">
                 <Timeline posts={posts} onDelete={handleDeletePost} />
-              </div>
-              <div className="fixed bottom-0 left-0 right-0 z-10 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4">
-                <div className="container mx-auto max-w-3xl">
-                  <PostForm onSubmit={handleNewPost} />
-                </div>
               </div>
             </motion.div>
           )}
@@ -121,7 +116,7 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
-              className="px-4 md:container md:mx-auto md:max-w-3xl"
+              className="h-full overflow-y-auto px-4 md:container md:mx-auto md:max-w-3xl"
             >
               <Settings
                 cloudProvider={cloudProvider}
@@ -133,6 +128,14 @@ function App() {
           )}
         </AnimatePresence>
       </main>
+
+      {view === "home" && (
+        <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4 z-10">
+          <div className="container mx-auto max-w-3xl">
+            <PostForm onSubmit={handleNewPost} />
+          </div>
+        </footer>
+      )}
     </div>
   );
 }

@@ -103,7 +103,7 @@ function App() {
               transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
               className="h-full"
             >
-              <div className="overflow-y-auto h-full px-4 md:container md:mx-auto md:max-w-3xl no-scrollbar">
+              <div className="overflow-y-auto h-full p-4 md:container md:mx-auto md:max-w-3xl no-scrollbar">
                 <Timeline posts={posts} onDelete={handleDeletePost} />
               </div>
             </motion.div>
@@ -130,7 +130,7 @@ function App() {
       </main>
 
       {view === "home" && (
-        <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4 z-10">
+        <footer className="p-4 z-10">
           <div className="container mx-auto max-w-3xl">
             <PostForm onSubmit={handleNewPost} />
           </div>

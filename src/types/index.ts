@@ -1,9 +1,9 @@
 export interface Post {
   id: string;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
-  isSynced: boolean;
+  created_at: string; // SQLiteではDateTimeをISO文字列として保存するため
+  updated_at: string;
+  is_synced: boolean;
 }
 
 export type CloudProvider = "google" | "apple" | "none";

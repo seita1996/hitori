@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { NavBar } from "./components/NavBar";
 import { PostForm } from "./components/PostForm";
 import { Timeline } from "./components/Timeline";
@@ -8,42 +7,80 @@ import { useLocalStorage } from "./hooks/useLocalStorage";
 import { syncPosts } from "./utils/cloudSync";
 import { Post, AppView, CloudProvider, SyncStatus } from "./types";
 import { AnimatePresence, motion } from "framer-motion";
+import { core } from "@tauri-apps/api";
 import "./index.css";
 
 function App() {
   // アプリの状態管理
   const [view, setView] = useState<AppView>("home");
-  const [posts, setPosts] = useLocalStorage<Post[]>("hitori-posts", []);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [cloudProvider, setCloudProvider] = useLocalStorage<CloudProvider>("cloud-provider", "none");
   const [syncStatus, setSyncStatus] = useState<SyncStatus>("synced");
+  const [loading, setLoading] = useState<boolean>(true);
+
+  // 投稿の取得
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      const fetchedPosts = await core.invoke<Post[]>("get_posts");
+      setPosts(fetchedPosts);
+    } catch (error) {
+      console.error("Failed to fetch posts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 初期ロード時に投稿を取得
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   // 新しい投稿を作成
-  const handleNewPost = (content: string) => {
-    const newPost: Post = {
-      id: uuidv4(),
-      content,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      isSynced: false
-    };
-
-    setPosts([newPost, ...posts]);
+  const handleNewPost = async (content: string) => {
+    try {
+      const newPost = await core.invoke<Post>("add_post", { content });
+      setPosts([newPost, ...posts]);
+    } catch (error) {
+      console.error("Failed to add post:", error);
+    }
   };
 
   // 投稿を削除
-  const handleDeletePost = (id: string) => {
-    setPosts(posts.filter(post => post.id !== id));
+  const handleDeletePost = async (id: string) => {
+    try {
+      await core.invoke("delete_post", { id });
+      setPosts(posts.filter(post => post.id !== id));
+    } catch (error) {
+      console.error("Failed to delete post:", error);
+    }
   };
 
   // 手動同期
   const handleSync = async () => {
     setSyncStatus("syncing");
-    const result = await syncPosts(posts, cloudProvider);
-    setSyncStatus(result.status);
+    try {
+      const result = await syncPosts(posts, cloudProvider);
+      setSyncStatus(result.status);
 
-    if (result.status === "synced") {
-      // 同期成功後、全ての投稿にisSynced=trueをセット
-      setPosts(posts.map(post => ({ ...post, isSynced: true })));
+      if (result.status === "synced") {
+        // 同期成功後、全ての投稿にisSynced=trueをセット
+        const syncedPostIds = posts
+          .filter(post => !post.is_synced)
+          .map(post => post.id);
+        
+        if (syncedPostIds.length > 0) {
+          await core.invoke("update_sync_status", {
+            ids: syncedPostIds,
+            is_synced: true
+          });
+          
+          setPosts(posts.map(post => ({ ...post, is_synced: true })));
+        }
+      }
+    } catch (error) {
+      console.error("Sync failed:", error);
+      setSyncStatus("error");
     }
   };
 
@@ -73,11 +110,28 @@ function App() {
     if (
       cloudProvider !== "none" &&
       navigator.onLine &&
-      posts.some(post => !post.isSynced)
+      posts.some(post => !post.is_synced)
     ) {
       const autoSync = async () => {
-        await syncPosts(posts, cloudProvider);
-        setPosts(posts.map(post => ({ ...post, isSynced: true })));
+        try {
+          const result = await syncPosts(posts, cloudProvider);
+          if (result.status === "synced") {
+            const syncedPostIds = posts
+              .filter(post => !post.is_synced)
+              .map(post => post.id);
+            
+            if (syncedPostIds.length > 0) {
+              await core.invoke("update_sync_status", {
+                ids: syncedPostIds,
+                is_synced: true
+              });
+              
+              setPosts(posts.map(post => ({ ...post, is_synced: true })));
+            }
+          }
+        } catch (error) {
+          console.error("Auto sync failed:", error);
+        }
       };
 
       // 30秒後に自動同期
@@ -104,7 +158,13 @@ function App() {
               className="h-full"
             >
               <div className="overflow-y-auto h-full p-4 md:container md:mx-auto md:max-w-3xl no-scrollbar">
-                <Timeline posts={posts} onDelete={handleDeletePost} />
+                {loading ? (
+                  <div className="flex justify-center items-center h-64">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+                  </div>
+                ) : (
+                  <Timeline posts={posts} onDelete={handleDeletePost} />
+                )}
               </div>
             </motion.div>
           )}

@@ -8,8 +8,8 @@ interface TimelineProps {
 
 export function Timeline({ posts, onDelete }: TimelineProps) {
   // 日付フォーマット用関数
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleString("ja-JP", {
+  const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleString("ja-JP", {
       year: "numeric",
       month: "numeric",
       day: "numeric",
@@ -23,6 +23,8 @@ export function Timeline({ posts, onDelete }: TimelineProps) {
 
   return (
     <div className="space-y-5">
+      <h2 className="text-xl font-semibold mb-5 text-gray-800 dark:text-gray-200">投稿履歴</h2>
+      
       {posts.length === 0 ? (
         <div className="text-center py-12 px-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md text-gray-500 dark:text-gray-400">
           <svg className="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -48,7 +50,7 @@ export function Timeline({ posts, onDelete }: TimelineProps) {
                   <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  {formatDate(post.createdAt)}
+                  {formatDate(post.created_at)}
                 </span>
                 {onDelete && (
                   <motion.button

@@ -12,7 +12,7 @@ import "./index.css";
 
 function App() {
   // アプリの状態管理
-  const [view, setView] = useState<AppView>("post");
+  const [view, setView] = useState<AppView>("home");
   const [posts, setPosts] = useLocalStorage<Post[]>("hitori-posts", []);
   const [cloudProvider, setCloudProvider] = useLocalStorage<CloudProvider>("cloud-provider", "none");
   const [syncStatus, setSyncStatus] = useState<SyncStatus>("synced");
@@ -92,28 +92,16 @@ function App() {
 
       <main className="container mx-auto p-4 md:p-6 flex-grow max-w-3xl">
         <AnimatePresence mode="wait">
-          {view === "post" && (
+          {view === "home" && (
             <motion.div
-              key="post"
+              key="home"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
-              className="py-2"
+              className="py-2 space-y-6"
             >
               <PostForm onSubmit={handleNewPost} />
-            </motion.div>
-          )}
-
-          {view === "timeline" && (
-            <motion.div
-              key="timeline"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
-              className="py-2"
-            >
               <Timeline posts={posts} onDelete={handleDeletePost} />
             </motion.div>
           )}

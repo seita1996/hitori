@@ -10,4 +10,4 @@ export type CloudProvider = "google" | "apple" | "none";
 
 export type SyncStatus = "synced" | "syncing" | "error" | "offline";
 
-export type AppView = "post" | "timeline" | "settings";
+export type AppView = "home" | "settings";

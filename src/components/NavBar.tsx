@@ -13,14 +13,9 @@ export function NavBar({ currentView, setView }: NavBarProps) {
         <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Hitori</h1>
         <div className="flex space-x-3">
           <NavButton
-            active={currentView === "post"}
-            onClick={() => setView("post")}
-            label="投稿"
-          />
-          <NavButton
-            active={currentView === "timeline"}
-            onClick={() => setView("timeline")}
-            label="履歴"
+            active={currentView === "home"}
+            onClick={() => setView("home")}
+            label="ホーム"
           />
           <NavButton
             active={currentView === "settings"}

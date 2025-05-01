@@ -87,18 +87,19 @@ function App() {
   }, [posts, cloudProvider]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col">
       <NavBar currentView={view} setView={setView} />
 
-      <main className="container mx-auto p-4 max-w-2xl">
+      <main className="container mx-auto p-4 md:p-6 flex-grow max-w-3xl">
         <AnimatePresence mode="wait">
           {view === "post" && (
             <motion.div
               key="post"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
+              className="py-2"
             >
               <PostForm onSubmit={handleNewPost} />
             </motion.div>
@@ -107,10 +108,11 @@ function App() {
           {view === "timeline" && (
             <motion.div
               key="timeline"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
+              className="py-2"
             >
               <Timeline posts={posts} onDelete={handleDeletePost} />
             </motion.div>
@@ -119,10 +121,11 @@ function App() {
           {view === "settings" && (
             <motion.div
               key="settings"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
+              className="py-2"
             >
               <Settings
                 cloudProvider={cloudProvider}
@@ -135,8 +138,8 @@ function App() {
         </AnimatePresence>
       </main>
 
-      <footer className="border-t dark:border-gray-700 p-4 text-center text-sm text-gray-500">
-        <p>Hitori - 誰にも見られない、あなた専用タイムライン</p>
+      <footer className="border-t border-gray-200 dark:border-gray-700 py-4 text-center text-sm text-gray-500 dark:text-gray-400 mt-8">
+        <p className="font-medium">Hitori - あなただけのつぶやき空間</p>
       </footer>
     </div>
   );

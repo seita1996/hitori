@@ -32,21 +32,26 @@ export function PostForm({ onSubmit, maxLength = 280 }: PostFormProps) {
   const isOverLimit = remainingChars < 0;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+    <div className="bg-white dark:bg-surface-dark shadow-md rounded-2xl p-6">
       <textarea
         ref={textAreaRef}
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="今、何を思う？"
-        className="w-full p-3 bg-transparent border-b dark:border-gray-700 focus:outline-none resize-none"
+        className="w-full p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-700 focus:border-transparent resize-none text-gray-700 dark:text-gray-200"
         rows={3}
       />
 
-      <div className="flex justify-between items-center mt-3">
+      <div className="flex justify-between items-center mt-4">
         <motion.span
           animate={{
-            color: isOverLimit ? "#ef4444" : "#9ca3af",
+            color: isOverLimit 
+              ? "#ef4444" 
+              : remainingChars < 20 
+                ? "#fbbf24" 
+                : "#9ca3af",
           }}
+          className="text-sm font-medium"
         >
           {remainingChars}
         </motion.span>
@@ -56,10 +61,10 @@ export function PostForm({ onSubmit, maxLength = 280 }: PostFormProps) {
           whileHover={{ scale: 1.05 }}
           onClick={handleSubmit}
           disabled={isOverLimit || !content.trim()}
-          className={`px-4 py-2 rounded-full ${
+          className={`px-6 py-2 rounded-xl font-medium transition-all duration-200 ${
             isOverLimit || !content.trim()
               ? "bg-gray-200 dark:bg-gray-700 text-gray-500"
-              : "bg-blue-500 text-white"
+              : "bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
           }`}
         >
           投稿

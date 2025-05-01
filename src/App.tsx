@@ -12,7 +12,7 @@ import "./index.css";
 
 function App() {
   // アプリの状態管理
-  const [view, setView] = useState<AppView>("post");
+  const [view, setView] = useState<AppView>("home");
   const [posts, setPosts] = useLocalStorage<Post[]>("hitori-posts", []);
   const [cloudProvider, setCloudProvider] = useLocalStorage<CloudProvider>("cloud-provider", "none");
   const [syncStatus, setSyncStatus] = useState<SyncStatus>("synced");
@@ -87,34 +87,25 @@ function App() {
   }, [posts, cloudProvider]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex flex-col">
-      <NavBar currentView={view} setView={setView} />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 grid grid-rows-[auto_1fr_auto] h-screen">
+      <header className="bg-white dark:bg-gray-800 shadow-sm z-10">
+        <NavBar currentView={view} setView={setView} />
+      </header>
 
-      <main className="container mx-auto p-4 md:p-6 flex-grow max-w-3xl">
+      <main className="overflow-hidden">
         <AnimatePresence mode="wait">
-          {view === "post" && (
+          {view === "home" && (
             <motion.div
-              key="post"
+              key="home"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
-              className="py-2"
+              className="h-full"
             >
-              <PostForm onSubmit={handleNewPost} />
-            </motion.div>
-          )}
-
-          {view === "timeline" && (
-            <motion.div
-              key="timeline"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
-              className="py-2"
-            >
-              <Timeline posts={posts} onDelete={handleDeletePost} />
+              <div className="overflow-y-auto h-full p-4 md:container md:mx-auto md:max-w-3xl no-scrollbar">
+                <Timeline posts={posts} onDelete={handleDeletePost} />
+              </div>
             </motion.div>
           )}
 
@@ -125,7 +116,7 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 150 }}
-              className="py-2"
+              className="h-full overflow-y-auto px-4 md:container md:mx-auto md:max-w-3xl"
             >
               <Settings
                 cloudProvider={cloudProvider}
@@ -138,9 +129,13 @@ function App() {
         </AnimatePresence>
       </main>
 
-      <footer className="border-t border-gray-200 dark:border-gray-700 py-4 text-center text-sm text-gray-500 dark:text-gray-400 mt-8">
-        <p className="font-medium">Hitori - あなただけのつぶやき空間</p>
-      </footer>
+      {view === "home" && (
+        <footer className="p-4 z-10">
+          <div className="container mx-auto max-w-3xl">
+            <PostForm onSubmit={handleNewPost} />
+          </div>
+        </footer>
+      )}
     </div>
   );
 }

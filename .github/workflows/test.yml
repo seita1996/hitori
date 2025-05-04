@@ -34,3 +34,14 @@ jobs:
         run: pnpm build
       - name: Unit Test
         run: pnpm test
+
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Run backend tests
+        run: cd src-tauri && cargo test

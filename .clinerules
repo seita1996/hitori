@@ -1,0 +1,37 @@
+# Cline Rules for Hitori Project
+
+This document outlines the guidelines and conventions for contributing to the Hitori project, intended for use with AI assistants like Cline. Adhering to these rules ensures consistency and maintainability across the codebase.
+
+## General Guidelines
+
+- **Technology Stack:** The project uses React, TypeScript, Tauri, Rust, and SQLite. Ensure any changes or new features align with this stack.
+- **Language:** Code comments and documentation should be written in English.
+- **Formatting:** Follow the project's existing formatting rules (e.g., as defined by Prettier or ESLint, if configured).
+- **Testing:** Ensure all existing tests pass after making changes. Write new tests for new features or significant modifications.
+
+## Frontend (React/TypeScript)
+
+- **File Location:**
+    - React components should be placed in the `src/components` directory.
+    - Hooks should be placed in the `src/hooks` directory.
+    - Type definitions should be placed in the `src/types` directory.
+    - Utility functions should be placed in the `src/utils` directory.
+- **State Management:** Utilize React's `useState` and `useEffect` hooks, and the custom `useLocalStorage` hook as appropriate.
+- **Backend Communication:** Interact with the Rust backend using `core.invoke` from the `@tauri-apps/api` package. Ensure calls are asynchronous.
+- **Styling:** Use Tailwind CSS classes for styling.
+
+## Backend (Rust/Tauri)
+
+- **File Location:**
+    - Tauri command definitions should be in `src-tauri/src/lib.rs`.
+    - Database interaction logic should be encapsulated within the `src-tauri/src/db.rs` module.
+    - Data models should be defined in `src-tauri/src/models.rs`.
+    - The main application entry point is `src-tauri/src/main.rs`.
+- **Error Handling:** Use Rust's `Result` type for error propagation in Tauri commands and database operations.
+- **Database:** Interact with the SQLite database through the functions provided in the `db` module.
+
+## Specific Commands/Patterns
+
+- When adding new Tauri commands, define them in `src-tauri/src/lib.rs` and ensure they are added to the `tauri::generate_handler!` macro in the `run` function.
+- When adding new database operations, add corresponding functions to `src-tauri/src/db.rs`.
+- When modifying data structures, update the `Post` struct in `src-tauri/src/models.rs` and the corresponding TypeScript type in `src/types/index.ts`.

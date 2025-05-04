@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { Timeline } from '../components/Timeline';
 import { Post } from '../types'; // Post型をインポート

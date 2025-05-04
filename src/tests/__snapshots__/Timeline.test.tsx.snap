@@ -37,7 +37,7 @@ exports[`Timeline > renders the component with posts 1`] = `
                 stroke-width="2"
               />
             </svg>
-            2025/5/4 09:18
+            2023/10/27 19:00
           </span>
         </div>
       </div>
@@ -67,7 +67,7 @@ exports[`Timeline > renders the component with posts 1`] = `
                 stroke-width="2"
               />
             </svg>
-            2025/5/4 09:18
+            2023/10/27 19:00
           </span>
         </div>
       </div>

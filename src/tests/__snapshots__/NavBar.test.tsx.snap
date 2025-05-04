@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NavBar > renders the component 1`] = `
+<div>
+  <header
+    class="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm"
+  >
+    <nav
+      class="flex justify-between items-center p-4 max-w-6xl mx-auto"
+    >
+      <h1
+        class="text-2xl font-bold text-indigo-600 dark:text-indigo-400"
+      >
+        Hitori
+      </h1>
+      <div
+        class="flex space-x-3"
+      >
+        <button
+          class="px-5 py-2 rounded-xl font-medium transition-all duration-200 bg-indigo-500 text-white shadow-sm"
+          tabindex="0"
+        >
+          ホーム
+        </button>
+        <button
+          class="px-5 py-2 rounded-xl font-medium transition-all duration-200 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+          tabindex="0"
+        >
+          設定
+        </button>
+      </div>
+    </nav>
+  </header>
+</div>
+`;
